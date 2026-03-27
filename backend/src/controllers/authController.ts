@@ -84,7 +84,7 @@ export const login = async (req: Request, res: Response) => {
 
         const token = jwt.sigh(
             {
-                id: user._id, email: user.email, role
+                id: user._id,name: user.name, email: user.email, role
             },
             JWT_SECRET,
             { expiresIn: '1h' }
