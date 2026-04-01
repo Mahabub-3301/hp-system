@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { router } from '../routes/StudentRoute';
 import mongoose from 'mongoose';
-import studentModel from '../models/Student';
+import studentModel from '../models/Student.ts';
 export const allStudentsList = async(_req: Request, res: Response) => {
     let students=await studentModel.find();
     res.send(students);

@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { allStudentsList, createStudent, studentById } from '../controllers/StudentController';
+import { allStudentsList, createStudent, studentById } from '../controllers/StudentController.ts';
 import { create } from 'node:domain';
 
 export const router = express.Router();

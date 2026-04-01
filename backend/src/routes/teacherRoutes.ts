@@ -1,7 +1,8 @@
-import { Router, Request, Response } from "express";
-import { authMiddleware } from "../middlewares/validationMiddleware";
+import type { Request, Response } from "express";
+import { authMiddleware } from "../middlewares/validationMiddleware.ts";
+import { Router } from "express";
 
-import Cohort from "../models/Cohort";
+import Cohort from "../models/Cohort.ts";
 
 const router = Router();
 

@@ -1,12 +1,14 @@
-import express, { Application } from "express";
+import express from 'express';
+import type { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import userRoutes from "./routes/userRoutes";
-import loginRoute from "./routes/loginRoute";
-import registerRoute from "./routes/registerRoute";
-import teacherRoutes from "./routes/teacherRoutes";
+import userRoutes from "./routes/userRoutes.ts";
+import loginRoute from "./routes/loginRoute.ts";
+import registerRoute from "./routes/registerRoute.ts";
+import teacherRoutes from "./routes/teacherRoutes.ts";
+import mongoose from 'mongoose';
 
 
 dotenv.config();
@@ -30,6 +32,12 @@ app.get("/", (req, res) => {
   res.send("Backend running with TypeScript 🚀");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server started on http://localhost:${PORT}`);
-});
+const MONGO_URI = process.env.MONGO_URL
+mongoose.connect(MONGO_URI
+).then(()=>{
+    app.listen(PORT,()=>{
+        console.log(`app listening at http://localhost:${PORT}`)
+    })
+}).catch((err)=>{
+    console.log(err)
+})

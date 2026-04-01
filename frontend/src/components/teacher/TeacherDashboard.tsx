@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 interface Student {
   id: string;
@@ -12,6 +13,7 @@ interface Cohort {
 }
 
 export default function TeacherDashboard() {
+  const [error,setError] = useState<String | null>(null);
   const [cohorts, setCohorts] = useState<Cohort[]>([
     {
       _id: "1",
@@ -32,6 +34,30 @@ export default function TeacherDashboard() {
       students: [{ id: "4", name: "John" }],
     },
   ]);
+
+  useEffect(() =>
+  {
+    const fetchCohorts = async () => {
+      try{
+        const response = await axios.get('http://localhost:5000/teacher/cohorts');
+        const data = response.data;
+        setCohorts(data);
+        setError(null);
+      } catch(error) {
+        console.log("Error Fetching Cohorts !!")
+        setError('Failed to fetch Cohots');
+      }
+    }
+  },[])
+
+  useEffect(()=> {
+    if(error) {
+      const timer = setTimeout(()=>{
+        setError(null);
+      }, 10000);
+      return ()=> clearTimeout(timer);
+    }
+  },[error]);
 
   const [selected, setSelected] = useState<Cohort | null>(null);
   const [newStudent, setNewStudent] = useState("");
@@ -145,6 +171,21 @@ export default function TeacherDashboard() {
           background: rgba(99, 102, 241, 0.7);
         }
       `}</style>
+
+      <>
+      {error && (
+        <div style={{
+          backgroundColor: '#fee2e2',
+          color: '#b91c1c',
+          padding: '10px',
+          borderRadius: '5px',
+          marginBottom: '10px'
+        }}>
+          <p>{error}</p>
+          <button onClick={()=>  setError(null)}>x</button>
+        </div>
+      )}
+      </>
 
       <div style={styles.page}>
         <div style={styles.header}>

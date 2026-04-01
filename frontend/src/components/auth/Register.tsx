@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -21,8 +23,9 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/register", form);
+      await axios.post("http://localhost:5000/register", form);
       setMessage("Registration successful ✅");
+      navigate('/login');
     } catch (err: any) {
       setMessage(err.response?.data?.error || "Registration failed ❌");
     }

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -20,9 +22,10 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/login", form);
+      const res = await axios.post("http://localhost:5000/login", form);
       localStorage.setItem("token", res.data.token);
       setMessage("Login successful ✅");
+      navigate('/Dashboard');
     } catch (err: any) {
       setMessage(err.response?.data?.error || "Login failed ❌");
     }
