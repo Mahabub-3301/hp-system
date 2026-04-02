@@ -37,6 +37,8 @@ export function validateRegister(req: Request, res: Response, next: NextFunction
 export function validateLogin(req: Request, res: Response, next: NextFunction) {
   const { email, password } = req.body;
 
+  console.log(email,password);
+
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required." });
   }

@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from 'jsonwebtoken';
 const JWT_SECRET = "supersecretkey";
 // Utility: check if email is valid
 function isValidEmail(email) {

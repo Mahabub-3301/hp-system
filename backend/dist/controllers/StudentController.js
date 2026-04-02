@@ -1,4 +1,4 @@
-import studentModel from '../models/Student';
+import studentModel from '../models/Student.ts';
 export const allStudentsList = async (_req, res) => {
     let students = await studentModel.find();
     res.send(students);

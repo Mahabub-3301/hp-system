@@ -1,6 +1,6 @@
+import { authMiddleware } from "../middlewares/validationMiddleware.ts";
 import { Router } from "express";
-import { authMiddleware } from "../middlewares/validationMiddleware";
-import Cohort from "../models/Cohort";
+import Cohort from "../models/Cohort.ts";
 const router = Router();
 router.get('/cohorts', authMiddleware(["teacher"]), async (req, res) => {
     try {

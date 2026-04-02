@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 interface Student {
-  id: string;
+  _id: string;   // ✅ FIX
   name: string;
 }
 
@@ -35,20 +35,40 @@ export default function TeacherDashboard() {
     },
   ]);
 
-  useEffect(() =>
-  {
-    const fetchCohorts = async () => {
-      try{
-        const response = await axios.get('http://localhost:5000/teacher/cohorts');
-        const data = response.data;
-        setCohorts(data);
-        setError(null);
-      } catch(error) {
-        console.log("Error Fetching Cohorts !!")
-        setError('Failed to fetch Cohots');
-      }
+  useEffect(() => {
+  const fetchCohorts = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        "http://localhost:5000/teacher/cohorts",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // ✅ normalize data (IMPORTANT)
+      const formatted = response.data.map((c: any) => ({
+        _id: c._id,
+        name: c.name,
+        students: c.students.map((s: any) => ({
+          id: s._id,   // 👈 convert _id → id for UI
+          name: s.name,
+        })),
+      }));
+
+      setCohorts(formatted);
+      setError(null);
+    } catch (error) {
+      console.log("Error Fetching Cohorts !!");
+      setError("Failed to fetch Cohorts");
     }
-  },[])
+  };
+
+  fetchCohorts(); // ✅ CALL IT
+}, []);
 
   useEffect(()=> {
     if(error) {
@@ -91,20 +111,20 @@ export default function TeacherDashboard() {
   };
 
   const removeStudent = (id: string) => {
-    if (!selected) return;
+  if (!selected) return;
 
-    const updated = cohorts.map((c) =>
-      c._id === selected._id
-        ? { ...c, students: c.students.filter((s) => s.id !== id) }
-        : c
-    );
+  const updated = cohorts.map((c) =>
+    c._id === selected._id
+      ? { ...c, students: c.students.filter((s) => s.id !== id) }
+      : c
+  );
 
-    setCohorts(updated);
-    setSelected({
-      ...selected,
-      students: selected.students.filter((s) => s.id !== id),
-    });
-  };
+  setCohorts(updated);
+  setSelected({
+    ...selected,
+    students: selected.students.filter((s) => s.id !== id),
+  });
+};
 
   return (
     <>

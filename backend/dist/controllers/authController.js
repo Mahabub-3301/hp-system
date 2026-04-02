@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import Student from "../models/Student";
-import Teacher from "../models/Teacher";
-const jwt = require("jsonwebtoken");
+import Student from "../models/Student.ts";
+import Teacher from "../models/Teacher.ts";
+import jwt from 'jsonwebtoken';
 const SALT_ROUNDS = 10;
 const JWT_SECRET = "supersecretkey";
 export const register = async (req, res) => {

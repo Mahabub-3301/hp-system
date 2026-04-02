@@ -5,5 +5,7 @@ import { validateLogin } from "../middlewares/validationMiddleware.ts";
 const router = Router();
 
 
-export default router.get('/',validateLogin,login);
+router.post('/',validateLogin,login);
+
+export default router;
 

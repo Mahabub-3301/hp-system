@@ -3,9 +3,10 @@ import React from "react";
 interface Props {
   role?: "guest" | "student" | "teacher";
   active?: string;
+  onLogout?: () => void; // callback prop
 }
 
-const Navbar: React.FC<Props> = ({ role = "guest", active }) => {
+const Navbar: React.FC<Props> = ({ role = "guest", active, onLogout }) => {
   return (
     <div style={styles.nav}>
       {/* Logo */}
@@ -24,7 +25,7 @@ const Navbar: React.FC<Props> = ({ role = "guest", active }) => {
           <>
             <NavItem label="Dashboard" href="/student" active={active} />
             <NavItem label="My Courses" href="/courses" active={active} />
-            <NavItem label="Logout" href="/login" active={active} />
+            <LogoutItem onLogout={onLogout} />
           </>
         )}
 
@@ -32,7 +33,7 @@ const Navbar: React.FC<Props> = ({ role = "guest", active }) => {
           <>
             <NavItem label="Dashboard" href="/teacher" active={active} />
             <NavItem label="Cohorts" href="/cohorts" active={active} />
-            <NavItem label="Logout" href="/login" active={active} />
+            <LogoutItem onLogout={onLogout} />
           </>
         )}
       </div>
@@ -64,6 +65,21 @@ const NavItem = ({
   );
 };
 
+// Special Logout item
+const LogoutItem = ({ onLogout }: { onLogout?: () => void }) => {
+  return (
+    <button
+      onClick={() => {
+        localStorage.removeItem("token"); // clear token
+        if (onLogout) onLogout(); // trigger parent callback
+      }}
+      style={styles.link}
+    >
+      Logout
+    </button>
+  );
+};
+
 const styles: any = {
   nav: {
     position: "fixed",
@@ -80,7 +96,6 @@ const styles: any = {
     borderBottom: "1px solid rgba(71, 85, 105, 0.3)",
     zIndex: 1000,
   },
-
   logo: {
     fontSize: "24px",
     fontWeight: "900",
@@ -89,12 +104,10 @@ const styles: any = {
     WebkitTextFillColor: "transparent",
     letterSpacing: "-0.5px",
   },
-
   links: {
     display: "flex",
     gap: "18px",
   },
-
   link: {
     textDecoration: "none",
     color: "#CBD5E1",
@@ -103,8 +116,10 @@ const styles: any = {
     padding: "10px 16px",
     borderRadius: "12px",
     transition: "all 0.3s ease",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
   },
-
   active: {
     background: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
     color: "white",

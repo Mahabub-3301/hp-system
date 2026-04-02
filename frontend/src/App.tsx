@@ -1,5 +1,13 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
+import { useState, useEffect } from "react";
 
 import TeacherDashboard from "./components/teacher/TeacherDashboard";
 import StudentDashboard from "./components/student/StudentDashboard";
@@ -8,18 +16,15 @@ import Register from "./components/auth/Register";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/protectedRoute";
 import { getUserFromToken } from "./utils/auth";
-
-
+import Cohorts from "./pages/cohorts";
 
 /* =========================
    🎯 Dashboard Router
 ========================= */
-
 function DashboardRouter() {
   const user = getUserFromToken();
 
   if (!user) return <Navigate to="/login" />;
-
   if (user.role === "teacher") return <TeacherDashboard />;
   if (user.role === "student") return <StudentDashboard />;
 
@@ -29,33 +34,50 @@ function DashboardRouter() {
 /* =========================
    🧭 Navbar Wrapper
 ========================= */
-
 function NavbarWrapper() {
   const location = useLocation();
-  const user = getUserFromToken();
+  const navigate = useNavigate();
 
-  let role: "guest" | "teacher" | "student" = "guest";
-  let active = "";
+  const [role, setRole] = useState("guest");
+  const [active, setActive] = useState("");
 
-  if (user) {
-    role = user.role;
-  }
+  /* 🔥 FIX: Re-check token whenever route changes */
+  useEffect(() => {
+    const user = getUserFromToken();
+    setRole(user ? user.role : "guest");
+  }, [location.pathname]);
 
-  if (location.pathname.startsWith("/dashboard")) {
-    active = "dashboard";
-  } else if (location.pathname === "/login") {
-    active = "login";
-  } else if (location.pathname === "/register") {
-    active = "register";
-  }
+  /* Active tab tracking */
+  useEffect(() => {
+    if (
+      location.pathname.startsWith("/dashboard") ||
+      location.pathname.startsWith("/student") ||
+      location.pathname.startsWith("/teacher")
+    ) {
+      setActive("dashboard");
+    } else if (location.pathname === "/login") {
+      setActive("login");
+    } else if (location.pathname === "/register") {
+      setActive("register");
+    } else if (location.pathname === "/courses") {
+      setActive("my courses");
+    } else if (location.pathname === "/cohorts") {
+      setActive("cohorts");
+    }
+  }, [location.pathname]);
 
-  return <Navbar role={role} active={active} />;
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setRole("guest");
+    navigate("/login");
+  };
+
+  return <Navbar role={role} active={active} onLogout={handleLogout} />;
 }
 
 /* =========================
    🚀 App Component
 ========================= */
-
 export default function App() {
   return (
     <Router>
@@ -82,7 +104,7 @@ export default function App() {
             }
           />
 
-          {/* Optional direct role routes */}
+          {/* Direct role routes */}
           <Route
             path="/teacher"
             element={
@@ -100,6 +122,11 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/cohorts"
+            element={
+              <ProtectedRoute role = "teacher"> <Cohorts /></ProtectedRoute>
+            }
+            />
 
           {/* 404 */}
           <Route

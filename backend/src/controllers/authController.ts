@@ -64,8 +64,8 @@ export const login = async (req: Request, res: Response) => {
 
     try {
         let user;
-
-        if (role == 'student') {
+        console.log(role);
+        if (role === 'student') {
             user = await Student.findOne({ email });
         } else if (role === 'teacher') {
             user = await Teacher.findOne({ email });
@@ -82,7 +82,7 @@ export const login = async (req: Request, res: Response) => {
             return res.status(401).json({ error: "Invalid credentials" });
         }
 
-        const token = jwt.sigh(
+        const token = jwt.sign(
             {
                 id: user._id,name: user.name, email: user.email, role
             },
