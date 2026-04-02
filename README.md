@@ -1,77 +1,201 @@
+# 🚀 HP System
 
-<div align="center">
+<p align="center">
+  <b>Full Stack Application for Student, Teacher & Cohort Management</b><br/>
+  Built with <b>Node.js • Express • TypeScript • MongoDB • React</b>
+</p>
 
-# 🚀 HP System - Holistic Points Platform
+---
 
-[![GitHub stars](https://img.shields.io/github/stars/Mahabub-3301/hp-system?style=social)](https://github.com/Mahabub-3301/hp-system)
-[![GitHub forks](https://img.shields.io/github/forks/Mahabub-3301/hp-system?style=social)](https://github.com/Mahabub-3301/hp-system)
-[![License](https://img.shields.io/github/license/Mahabub-3301/hp-system)](https://github.com/Mahabub-3301/hp-system/blob/main/LICENSE)
+## 👨‍💻 Authors
 
-<div align="center">
-<img src="https://user-images.githubusercontent.com/123456789/28765432-1b8f4c3a-75e6-11e8-9f6e-1a2b3c4d5e6f.gif" width="100"/>
-</div>
+* **Shaik Rehan Ur Rahman**
+* **Shaik Mahaboob Basha**
 
-**A comprehensive gamified learning platform that rewards student progress with HP (Holistic Points) across courses, activities, and external integrations.**
+---
 
-</div>
+## 🔗 Repository
 
-## ✨ **Project Overview**
+👉 https://github.com/shaikrehansr9/hp-system/tree/main
+👉 https://github.com/Mahabub-3301/hp-system/tree/main
 
-HP System is a **modular, scalable platform** designed to gamify education through a points-based reward system. Teachers create cohorts and activities, students earn/spend HP based on performance, and the system handles automated rewards, penalties, and comprehensive analytics.
+---
 
-### **Core Philosophy**
+## ✨ Features
 
-## 🏗️ **Architecture & Entities**
+* 👤 Student Registration
+* 👨‍🏫 Teacher Registration
+* 🔐 Login with JWT Authentication
+* 🔒 Password hashing using bcrypt
+* 🎭 Role-based system (Student / Teacher)
+* 📊 Student data management
+* 🧑‍🤝‍🧑 Cohort with teacher & students
+* 🛡️ Protected routes using token
 
-**Key Entities (Phase 0 ✅):**
-| Entity | Description | Status |
-|--------|-------------|--------|
-| `Teacher` | Course/Cohort owner | ✅ |
-| `Course` | Academic container | ✅ |
-| `Cohort` | Student group | ✅ |
-| `Student` | Email-based identity | ✅ |
-| `Activity` | Tasks with HP rules | ✅ |
-| `Submission` | Proof of completion | ✅ |
-| `HP Ledger` | All credit/debit events | ✅ |
-| `HP Rule` | Reward/Penalty config | ✅ |
+---
 
-## 📋 **Phase 0 Features (COMPLETE ✅)**
+## 🛠️ Tech Stack
 
-### **Teacher Workflow**
-- [x] Cohort Setup + Student Import (email-based)
-- [x] Base HP Assignment (default: 100, configurable)
-- [x] Activity Creation (title, deadline, HP rules, mandatory toggle)
-- [x] Submission Review + Revert
+### ⚙️ Backend
 
-### **Student Experience**  
-- [x] In-Platform Submission (file/image/link/text)
-- [x] Auto HP Awards (absolute/% compounding)
-- [x] Real-time Dashboard + Ledger
+* Node.js
+* Express.js
+* TypeScript
+* MongoDB (Mongoose)
+* JWT
+* bcrypt
 
-### **Automation**
-- [x] Penalty Engine (scheduled for mandatory deadlines)
-- [x] Full Ledger Audit Trail
-- [x] Email Canonical Identity
+### 🎨 Frontend
 
-## 🎯 **Roadmap**
+* React
+* TypeScript
 
-| Phase | Milestone | Status |
-|-------|-----------|--------|
-| **1** | Core HP System | ✅ LIVE |
-| **2** | VIBE Integration | 🔄 Next |
-| **3** | Google Forms/CSV | 🔄 Planned |
-| **4** | Peer Endorsements | 🔄 Planned |
-| **5** | AI Feedback Coach | 🔄 Planned |
+---
 
-## 🚀 **Get Started (5 seconds)**
+## 📁 Project Structure
 
-```bash
-git clone https://github.com/Mahabub-3301/hp-system.git
-cd hp-system
-npm install
-npm run dev
-# → http://localhost:3000
+### 📦 Backend
+
+```
+backend/src/
+├── controllers/
+├── models/
+├── routes/
+├── middlewares/
+├── app.ts
+└── index.ts
 ```
 
-## 🛠️ **Tech Stack**
-MERN
+### 💻 Frontend
+
+```
+frontend/src/
+├── components/
+└── pages/
+```
+
+---
+
+## ⚙️ Setup Instructions
+
+### 🔽 1. Clone Repository
+
+```
+git clone https://github.com/shaikrehansr9/hp-system.git
+cd hp-system
+```
+
+---
+
+### 🔧 2. Backend Setup
+
+```
+cd backend
+npm install
+```
+
+Create `.env` file:
+
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
+
+Run backend:
+
+```
+npm run dev
+```
+
+---
+
+### 🌐 3. Frontend Setup
+
+```
+cd frontend
+npm install
+npm start
+```
+
+---
+
+## 🔌 API Endpoints
+
+### 🔐 Authentication
+
+* POST `/register`
+* GET `/login`
+
+---
+
+### 🎓 Student
+
+* GET `/api/students`
+* GET `/api/students/:id`
+* POST `/api/students`
+
+---
+
+### 👨‍🏫 Teacher
+
+* Routes under `/teacher`
+
+---
+
+## 🔄 Authentication Flow
+
+1. User registers (Student / Teacher)
+2. Password is hashed using bcrypt
+3. User logs in
+4. JWT token is generated
+5. Token stored in localStorage
+6. Protected pages verify token
+
+---
+
+## 🗄️ Database Models
+
+### 🎓 Student
+
+* name
+* email
+* passwordHash
+* role
+* baseHP
+* currentHP
+* cohorts
+
+---
+
+### 👨‍🏫 Teacher
+
+* name
+* email
+* passwordHash
+* role
+* cohorts
+
+---
+
+### 🧑‍🤝‍🧑 Cohort
+
+* name
+* teacher
+* students
+* BaseHp
+
+---
+
+## ▶️ Running the Project
+
+1. Start backend server
+2. Start frontend server
+3. Open browser
+4. Register or login
+5. Access dashboard
+
+---
+
+<p align="center">
+  ⭐ If you found this project useful, consider giving it a star!
+</p>
